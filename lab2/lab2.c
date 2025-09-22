@@ -1,0 +1,44 @@
+#define _POSIX_C_SOURCE 200809L
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#define MAXLINE 1024
+
+int main(int argc, char *argv[]) {
+  char path[MAXLINE];
+
+  puts("Enter programs to run.");
+  for (;;) {
+    printf("> ");
+    fflush(stdout);
+
+    if (!fgets(path, sizeof path, stdin))
+      break;
+    size_t n = strcspn(path, "\r\n");
+    path[n] = '\0';
+    if (n == 0)
+      continue;
+
+    pid_t pid = fork();
+    if (pid < 0) {
+      perror("fork");
+      continue;
+    }
+    if (pid == 0) {
+      char *argv[] = {path, NULL};
+      execvp(path, argv);
+      fprintf(stderr, "Exec failure\n");
+      _exit(127);
+    }
+
+    int status = 0;
+    if (waitpid(pid, &status, 0) < 0) {
+      perror("waitpid");
+    }
+  }
+
+  return 0;
+}
