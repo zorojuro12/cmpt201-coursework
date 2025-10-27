@@ -1,0 +1,16 @@
+#include <stdio.h>
+#include <sys/wait.h>
+#include <unistd.h>
+
+int main() {
+  pid_t pid = fork();
+  if (pid) {
+    printf("This is the parent process\n");
+    int wstatus = 0;
+    waitpid(pid, &wstatus, 0);
+    printf("should print after child process is done\n");
+  } else {
+    printf("This is the child process\n");
+    execl("/bin/ls", "/bin/ls", "-a", "-l", NULL);
+  }
+}

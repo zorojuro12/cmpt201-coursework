@@ -1,0 +1,14 @@
+#include <stdio.h>
+#include <unistd.h>
+
+sleeping(void) {
+  printf("Sleeping...");
+  sleep(3);
+}
+
+int main() {
+  while (1){
+    sleeping();
+  }
+  return 0;
+}

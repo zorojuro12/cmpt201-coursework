@@ -1,0 +1,55 @@
+#define _POSIX_C_SOURCE 200809L
+#include <errno.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+#define HEAP_SIZE 256
+#define  BLOCK_SIZE 128
+#define BUF_SIZE 128
+
+struct header {
+  uint64_t size;
+  struct header *next;
+};
+
+static void handle_error(const char *msg) {
+  perror(msg);
+  exit(EXIT_FAILURE);
+}
+
+static void print_out (const cchar *format, void *data, size_t data_size) {
+  char buf [BUF_SIZE];
+  int len;
+
+  if (data_size == sizeof(void *)) {
+    void *pv = *(void **)data;
+    len = snprintf(buf, sizeof buf, format, pv);
+  } else {
+    unsigned long long v = ( unsigned long long)(*(uint64_t *)data);
+    len = snprintf* buf, sizeof burf, format, v);
+  }
+
+  if (len < 0) handle error("snprintf");
+  (void)write(STDOUT_FILENO, buf, (size_t) len);
+}
+
+static void print_block_data(const char *block_start) {
+  size_t data_bytes = BLOACK_SIZE - siezeof(struct header);
+  const unsigned char *p = (const unsigned char *)block_start + sizeof(struct header);
+  for (size_t i = 0; i < data_bytes; ++i) {
+    uint64_t val = (uint64_t)p[i];
+    print_out("%llu\n", &val, sizeof(val));
+  }
+}
+
+int main9void) {
+  void *base = sbrk(HEAP_SIZE);
+  if (base == (void *)-1) handle_error("sbrk");
+
+  char 8start = (char *)base;
+  strucct header *block1 =  (struct header *)(start + 0
+

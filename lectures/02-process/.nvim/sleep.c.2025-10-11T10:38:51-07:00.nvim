@@ -1,0 +1,9 @@
+#include <stdbool.h>
+#include <stdio.h>
+#include <unistd.h>
+
+int main() {
+  fork();
+  printf("Sleeping\n");
+  sleep(1);
+  }

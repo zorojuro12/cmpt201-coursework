@@ -1,0 +1,5 @@
+#define _POSIX_C_SOURCE
+#include <signal.h>
+#include <stdio.h>
+
+int main() {

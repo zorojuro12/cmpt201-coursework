@@ -1,0 +1,11 @@
+#include <stdbool.h>
+#include <stdio.h>
+#include <unistd.h>
+
+int main() {
+  printf("Before forking\n");
+  fork();
+  printf("Sleeping\n");
+  sleep(10);
+  printf("After forking\n");
+}

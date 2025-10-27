@@ -1,0 +1,19 @@
+#include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+int main(void) {
+  pid_t pid = fork();
+
+  if (pid < 0) {
+    perror("fork");
+    return 1;
+  } else if (pid == 0) {
+    printf("I am the child! My PID is %d\n", getpid());
+  } else {
+    printf("I am the parent! My PID is %d, my child's PID is %d\n", getpid(),
+           pid);
+  }
+
+  return 0;
+}
