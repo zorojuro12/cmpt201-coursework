@@ -1,3 +1,5 @@
+// Corrected example_1.c
+
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -35,6 +37,10 @@ void insert_sorted(uint64_t data) {
 
   if (head == NULL) {
     head = new_node;
+  // fix: added check for inserting at the beginning of the list (segmentation fault without it)
+  } else if (data < head->data) {
+    new_node->next = head;
+    head = new_node;
   } else {
     node_t *curr = head;
     node_t *prev = NULL;
@@ -48,6 +54,11 @@ void insert_sorted(uint64_t data) {
       }
       prev = curr;
       curr = curr->next;
+    }
+    
+    // fix: if we reached the end without inserting, append to the end
+    if (!inserted) {
+      prev->next = new_node;
     }
   }
 }
